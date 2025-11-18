@@ -1,12 +1,15 @@
 {
-  "name": "lazy-load-demo",
+  "name": "angular-lazy-load-workspace",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build lazy-load --configuration production",
+    "build:demo": "ng build demo --configuration production",
     "watch": "ng build --watch --configuration development",
-    "serve:ssr:lazy-load-demo": "node dist/lazy-load-demo/server/server.mjs"
+    "serve:ssr:demo": "node dist/demo/server/server.mjs",
+    "build:lib:npm": "ng build lazy-load --configuration production && cd dist/lazy-load && npm pack",
+    "publish:lib": "ng build lazy-load --configuration production && cd dist/lazy-load && npm publish --access public"
   },
   "prettier": {
     "printWidth": 100,
@@ -29,17 +32,21 @@
     "@angular/platform-browser": "^20.3.0",
     "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.3.0",
-    "@angular/ssr": "^20.3.3",
+    "@angular/ssr": "^20.3.10",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.3.3",
+    "@angular/build": "^20.3.10",
     "@angular/cli": "^20.3.3",
     "@angular/compiler-cli": "^20.3.0",
     "@types/express": "^5.0.1",
-    "@types/node": "^20.17.19",
-    "typescript": "~5.9.2"
+    "@types/node": "^20.19.25",
+    "angular-eslint": "20.6.0",
+    "eslint": "^9.39.0",
+    "ng-packagr": "^20.3.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.46.3"
   }
 }

@@ -3,58 +3,57 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lazy-load-demo": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "inlineTemplate": true,
-          "inlineStyle": true,
-          "skipTests": true
+    "lazy-load": {
+      "projectType": "library",
+      "root": "projects/lazy-load",
+      "sourceRoot": "projects/lazy-load/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/lazy-load/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/lazy-load/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         },
-        "@schematics/angular:class": {
-          "skipTests": true
-        },
-        "@schematics/angular:directive": {
-          "skipTests": true
-        },
-        "@schematics/angular:guard": {
-          "skipTests": true
-        },
-        "@schematics/angular:interceptor": {
-          "skipTests": true
-        },
-        "@schematics/angular:pipe": {
-          "skipTests": true
-        },
-        "@schematics/angular:resolver": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/lazy-load/tsconfig.spec.json"
+          }
         }
-      },
-      "root": "",
-      "sourceRoot": "src",
+      }
+    },
+    "demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/demo",
+      "sourceRoot": "projects/demo/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
-            "tsConfig": "tsconfig.app.json",
+            "browser": "projects/demo/src/main.ts",
+            "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/demo/public"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "projects/demo/src/styles.css"
             ],
-            "server": "src/main.server.ts",
+            "server": "projects/demo/src/main.server.ts",
             "outputMode": "server",
             "ssr": {
-              "entry": "src/server.ts"
+              "entry": "projects/demo/src/server.ts"
             }
           },
           "configurations": {
@@ -85,16 +84,31 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "lazy-load-demo:build:production"
+              "buildTarget": "demo:build:production"
             },
             "development": {
-              "buildTarget": "lazy-load-demo:build:development"
+              "buildTarget": "demo:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/demo/tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/demo/public"
+              }
+            ],
+            "styles": [
+              "projects/demo/src/styles.css"
+            ]
+          }
         }
       }
     }

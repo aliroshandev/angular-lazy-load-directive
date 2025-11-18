@@ -1,15 +1,17 @@
 # Contributing to Angular Lazy Load Directive
 
-## How to Contribute
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## Development Setup
 
-```bash
-npm install
-ng serve
+1. Fork and clone the repository
+2. Install dependencies: `npm install`
+3. Run demo: `npm start`
+4. Make your changes
+5. Test: `npm test`
+6. Submit a Pull Request
+
+## Code Style
+
+- Follow Angular style guide
+- Use TypeScript strict mode
+- Add tests for new features
+- Update documentation
