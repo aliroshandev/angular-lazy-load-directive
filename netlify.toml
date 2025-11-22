@@ -1,0 +1,8 @@
+[build]
+  publish = "dist/demo/browser"
+  command = "npm run build:demo"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
