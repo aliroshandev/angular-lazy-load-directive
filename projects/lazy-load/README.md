@@ -4,9 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/angular-lazy-load-directive)](https://bundlephobia.com/package/angular-lazy-load-directive)
 [![npm downloads](https://img.shields.io/npm/dm/angular-lazy-load-directive.svg)](https://www.npmjs.com/package/angular-lazy-load-directive)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/angular-lazy-load-directive.svg)](https://github.com/yourusername/angular-lazy-load-directive/stargazers)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
-[![Angular](https://img.shields.io/badge/Angular-17+-red.svg)](https://angular.io/)
+[![GitHub stars](https://img.shields.io/github/stars/aliroshandev/angular-lazy-load-directive.svg)](https://github.com/yourusername/angular-lazy-load-directive/stargazers)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
+[![Angular](https://img.shields.io/badge/Angular-20+-red.svg)](https://angular.io/)
 
 A lightweight, performant directive for lazy loading images in Angular applications with IntersectionObserver API. Built with zoneless change detection for optimal performance.
 
@@ -42,7 +42,7 @@ Check out the live demo: [https://angular-lazy-load-demo.netlify.app](https://an
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/angular-lazy-load-directive.git
+git clone https://github.com/aliroshandev/angular-lazy-load-directive.git
 cd angular-lazy-load-directive
 
 # Install dependencies
