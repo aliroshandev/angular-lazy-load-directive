@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/angular-lazy-load-directive)](https://bundlephobia.com/package/angular-lazy-load-directive)
 [![npm downloads](https://img.shields.io/npm/dm/angular-lazy-load-directive.svg)](https://www.npmjs.com/package/angular-lazy-load-directive)
-[![GitHub stars](https://img.shields.io/github/stars/aliroshandev/angular-lazy-load-directive.svg)](https://github.com/yourusername/angular-lazy-load-directive/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/aliroshandev/angular-lazy-load-directive.svg)](https://github.com/aliroshandev/angular-lazy-load-directive/stargazers)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
 [![Angular](https://img.shields.io/badge/Angular-20+-red.svg)](https://angular.io/)
 
