@@ -1,7 +1,7 @@
 {
   "name": "angular-lazy-load-directive",
   "description": "A lightweight, performant directive for lazy loading images in Angular applications",
-  "version": "20.3.1",
+  "version": "20.3.2",
   "author": "Ali Roshanzamir <a76roshanzamir@gmail.com>",
   "repository": {
     "type": "git",
