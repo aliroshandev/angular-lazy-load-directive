@@ -46,12 +46,13 @@ export class LazyLoad implements OnInit, OnDestroy {
   private abortController?: AbortController;
   private timeoutId?: number;
   private loadListeners: (() => void)[] = [];
+  private destroyed = false;
 
   constructor() {
     // Use effect to react to input changes
     effect(() => {
       const url = this.appLazyLoad();
-      if (url && this.hasLoaded() && this.el.nativeElement.src !== url) {
+      if (url && this.hasLoaded() && this.el.nativeElement.getAttribute('src') !== url) {
         // Reset and reload if URL changes
         this.reset();
         this.setupObserver();
@@ -123,7 +124,7 @@ export class LazyLoad implements OnInit, OnDestroy {
 
     const errorListener = this.renderer.listen(img, 'error', (event: Event) => {
       // Prevent infinite loop
-      if (img.src === this.errorSrc()) return;
+      if (img.getAttribute('src') === this.errorSrc()) return;
 
       if (this.attempts() < this.retryAttempts()) {
         this.attempts.update(a => a + 1);
@@ -212,7 +213,7 @@ export class LazyLoad implements OnInit, OnDestroy {
         this.abortController.signal.addEventListener('abort', () => {
           testImg.src = '';
           window.clearTimeout(this.timeoutId);
-          reject(new Error('Image loading cancelled'));
+          reject(new DOMException('Image loading cancelled', 'AbortError'));
         });
       }
 
@@ -267,6 +268,9 @@ export class LazyLoad implements OnInit, OnDestroy {
   }
 
   private handleLoadError(error: any) {
+    // A cancelled load is not a failure, and a destroyed directive must not retry or emit.
+    if (this.destroyed || error?.name === 'AbortError') return;
+
     const img = this.el.nativeElement;
 
     if (this.attempts() < this.retryAttempts()) {
@@ -321,6 +325,7 @@ export class LazyLoad implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroyed = true;
     this.cancelCurrentLoad();
     this.cleanupObserver();
     this.clearListeners();

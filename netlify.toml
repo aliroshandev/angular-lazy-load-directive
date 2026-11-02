@@ -2,6 +2,9 @@
   publish = "dist/demo/browser"
   command = "npm run build:demo"
 
+[build.environment]
+  NODE_VERSION = "24"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

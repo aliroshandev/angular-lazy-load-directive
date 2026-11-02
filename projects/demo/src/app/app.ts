@@ -1,4 +1,4 @@
-import {Component, computed, effect, signal} from '@angular/core';
+import {Component, computed, effect, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LazyLoad} from "../../../lazy-load/src/lib/directives/lazy-load";
 
 interface ImageData {
@@ -15,7 +15,7 @@ interface ImageData {
   template: `
     <div class="container">
       <header>
-        <h1>🚀 Angular 20 Lazy Load Directive</h1>
+        <h1>🚀 Angular Lazy Load Directive</h1>
         <p>High-performance image loading with Signals</p>
 
         <div class="stats">
@@ -98,6 +98,7 @@ interface ImageData {
         </div>
       }
     </div>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .container {
       max-width: 1400px;

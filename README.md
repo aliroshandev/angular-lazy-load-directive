@@ -1,54 +1,124 @@
-# Angular Lazy Load Directive 🚀
+# Angular Lazy Load Directive
 
+[![CI](https://github.com/aliroshandev/angular-lazy-load-directive/actions/workflows/ci.yml/badge.svg)](https://github.com/aliroshandev/angular-lazy-load-directive/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/angular-lazy-load-directive.svg)](https://www.npmjs.com/package/angular-lazy-load-directive)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/angular-lazy-load-directive)](https://bundlephobia.com/package/angular-lazy-load-directive)
-[![npm downloads](https://img.shields.io/npm/dm/angular-lazy-load-directive.svg)](https://www.npmjs.com/package/angular-lazy-load-directive)
-[![GitHub stars](https://img.shields.io/github/stars/aliroshandev/angular-lazy-load-directive.svg)](https://github.com/aliroshandev/angular-lazy-load-directive/stargazers)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
-[![Angular](https://img.shields.io/badge/Angular-20+-red.svg)](https://angular.io/)
 
-A lightweight, performant directive for lazy loading images in Angular applications with IntersectionObserver API. Built with zoneless change detection for optimal performance.
+A small standalone Angular directive that loads an image when it enters the viewport. It's built with signals and IntersectionObserver, and has no dependencies beyond Angular and `tslib`.
 
-## 🎯 Key Features
+[Live demo](https://angular-lazy-load-demo.netlify.app)
 
-- ✨ **Lightweight** - Only ~2KB gzipped
-- ⚡ **Performant** - Uses IntersectionObserver API
-- 🚀 **Zoneless** - Works with Angular's experimental zoneless mode
-- 🌐 **SSR Compatible** - Full Server-Side Rendering support
-- 📱 **Responsive** - Mobile-first approach
-- 🎨 **Customizable** - Placeholder and error image support
-- 🔄 **Progressive Enhancement** - Fallback for older browsers
-- 📦 **Tree-shakable** - Standalone directive
-- 🎭 **Animations** - Smooth fade-in transitions
-- ♿ **Accessible** - Maintains alt attributes and ARIA labels
+## Features
 
-## 📊 Performance Impact
+- Loads images only when they near the viewport
+- Placeholder and fallback images
+- Retries with a delay, plus a load timeout
+- Safe during server rendering: nothing loads on the server
+- Reloads when the URL input changes
+- Works in zoneless applications
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| First Contentful Paint | 3.2s | 1.8s | **44%** ⬆️ |
-| Largest Contentful Paint | 5.8s | 2.4s | **59%** ⬆️ |
-| Total Blocking Time | 890ms | 230ms | **74%** ⬆️ |
-| Initial Bundle Size | 12MB | 4MB | **67%** ⬇️ |
-| Lighthouse Score | 67 | 94 | **+27** 📈 |
+## Compatibility
 
-## 🚀 Demo
+| Package version | Angular |
+|---|---|
+| 22.x | 20.3 to 22 |
 
-### 🔗 Live Demo
-Check out the live demo: [https://angular-lazy-load-demo.netlify.app](https://angular-lazy-load-demo.netlify.app)
+A package build was installed and compiled in new Angular 20, 21 and 22 applications. The unit tests run on Angular 22.
 
-### 🏃‍♂️ Run Demo Locally
+## Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/aliroshandev/angular-lazy-load-directive.git
-cd angular-lazy-load-directive
+npm install angular-lazy-load-directive
+```
 
-# Install dependencies
+## Usage
+
+```ts
+import { Component } from '@angular/core';
+import { LazyLoad } from 'angular-lazy-load-directive';
+
+@Component({
+  selector: 'app-photo',
+  imports: [LazyLoad],
+  template: `
+    <img
+      [appLazyLoad]="'/photos/large.jpg'"
+      placeholderSrc="/photos/placeholder.jpg"
+      errorSrc="/photos/fallback.jpg"
+      alt="Mountain lake at sunrise"
+      (imageLoaded)="onLoaded($event)"
+      (imageError)="onError($event)"
+    />
+  `,
+})
+export class PhotoComponent {
+  onLoaded(url: string) {
+    console.log('Loaded', url);
+  }
+
+  onError(error: Error) {
+    console.error(error);
+  }
+}
+```
+
+Set `width` and `height` on the image, or size it with CSS, so the page doesn't shift when the image loads.
+
+## Inputs
+
+| Input | Type | Default | Description |
+|---|---|---|---|
+| `appLazyLoad` | `string` | required | Image URL |
+| `placeholderSrc` | `string` | none | Shown until the image loads |
+| `errorSrc` | `string` | none | Shown after all retries fail |
+| `rootMargin` | `string` | `'50px'` | IntersectionObserver root margin |
+| `threshold` | `number \| number[]` | `0.01` | IntersectionObserver threshold |
+| `retryAttempts` | `number` | `3` | Retries after a failed load |
+| `retryDelay` | `number` | `1000` | Milliseconds between retries |
+| `loadTimeout` | `number` | `10000` | Milliseconds before a load counts as failed |
+
+## Outputs
+
+| Output | Type | Description |
+|---|---|---|
+| `imageLoaded` | `string` | Emits the URL after the image loads |
+| `imageError` | `Error` | Emits after all retries fail |
+| `loadingProgress` | `number` | Emits 0 at the start, 50 once the image can be decoded, and 100 when done. These are stages, not download progress |
+
+## CSS classes
+
+The directive adds these classes, so you can style transitions:
+
+| Class | When |
+|---|---|
+| `lazy-placeholder` | The placeholder is showing |
+| `lazy-loaded` | The image has loaded |
+| `lazy-ssr` | The image was rendered on the server and is waiting for the browser |
+
+## Server rendering
+
+On the server, the directive sets the placeholder and stores the real URL in `data-lazy-src`. Loading starts in the browser.
+
+## Limits
+
+- It works on `<img>` elements only.
+- If IntersectionObserver isn't available, the image loads straight away.
+- It relies on the browser's image cache. A successful load fetches the image first, then sets `src`, so make sure your images can be cached or the browser may request them twice.
+- For most pages, the browser's own `loading="lazy"` is simpler. Use this directive when you need placeholders, retries, a timeout or load events.
+
+## Development
+
+```bash
 npm install
+npm start          # run the demo at http://localhost:4200
+npm test           # run the directive's unit tests
+npm run build      # build the library into dist/lazy-load
+```
 
-# Run demo application
-npm run start
+## Contributing
 
-# Open browser at http://localhost:4200
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+MIT
